@@ -8,6 +8,7 @@ const cors = require('cors')
 app.use(cors())
 app.use(bodyParser.json())
 morganBody(app)
+app.use(express.static('build'))
 
 let persons = [ 
   {
