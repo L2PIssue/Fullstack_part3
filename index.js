@@ -1,27 +1,17 @@
+require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const morganBody = require('morgan-body') 
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./models/person')
 
 app.use(cors())
 app.use(bodyParser.json())
-morganBody(app)
 app.use(express.static('build'))
 
-let persons = [ 
-  {
-    "name": "Toimiikohan Nodemon",
-    "number": "0501234567",
-    "id": 1
-  },
-  {
-    "name": "Poistettava Nimi", 
-    "number": "0501234567",
-    "id": 2
-  }
-]
+let persons = []
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -38,9 +28,18 @@ app.get('/info', (req, res) => {
   res.send(text)
 })
 
+// Tässä uusi get metodi
 app.get('/api/persons', (req, res) => {
+  Person.find({}).then(persons => {
+    res.json(persons.map(person => person.toJSON()))
+
+  });
+});
+
+// Vanha get metodi
+/*app.get('/api/persons', (req, res) => {
   res.json(persons)
-})
+})*/
 
 app.get('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
