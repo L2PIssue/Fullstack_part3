@@ -1,26 +1,24 @@
-var time = require('express-timestamp')
-
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
+const morganBody = require('morgan-body') 
+const morgan = require('morgan')
+const cors = require('cors')
 
+app.use(cors())
 app.use(bodyParser.json())
+morganBody(app)
 
-let persons = [
+let persons = [ 
   {
     "name": "Toimiikohan Nodemon",
     "number": "0501234567",
     "id": 1
   },
   {
-    "name": "Poistettava Nimi",
+    "name": "Poistettava Nimi", 
     "number": "0501234567",
     "id": 2
-  },
-  {
-    "name": "Uusi Nimi",
-    "number": "",
-    "id": 4
   }
 ]
 
@@ -81,7 +79,7 @@ app.post('/api/persons', (req, res) => {
   res.json(body)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
